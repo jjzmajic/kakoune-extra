@@ -10,15 +10,26 @@ hook global KakBegin .* %{
     evaluate-commands %sh{
         if [ -n "${DVTM}" ]; then
             echo "
-                alias global new dvtm-new-window
+                alias global terminal dvtm-terminal
                 alias global focus dvtm-focus
+                alias global new dvtm-new
             "
         fi
     }
 }
 
+define-command -params 1.. -shell-completion -docstring "Create a new terminal
+and launch any arguments as a command in it." \
+    dvtm-terminal %{ nop %sh{
+        if [ -p "${DVTM_CMD_FIFO}" ]; then
+            printf %s\\n "create \"$@\"" > "${DVTM_CMD_FIFO}"
+        else
+            printf %s\\n 'echo -color Error No command socket available'
+        fi
+} }
+
 define-command -params .. -command-completion -docstring "Create a new window" \
-    dvtm-new-window %{ evaluate-commands %sh{
+    dvtm-new %{ evaluate-commands %sh{
     params=""
     if [ $# -gt 0 ]; then
         ## `dvtm` requires those simple quotes to be escaped even within double quotes
