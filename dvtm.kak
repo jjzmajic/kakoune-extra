@@ -24,7 +24,7 @@ and launch any arguments as a command in it." \
         if [ -p "${DVTM_CMD_FIFO}" ]; then
             printf %s\\n "create \"$@\"" > "${DVTM_CMD_FIFO}"
         else
-            printf %s\\n 'echo -color Error No command socket available'
+            printf %s\\n 'echo Error No command socket available'
         fi
 } }
 
@@ -40,7 +40,7 @@ define-command -params .. -command-completion -docstring "Create a new window" \
     if [ -p "${DVTM_CMD_FIFO}" ]; then
         printf %s\\n "create \"kak -c ${kak_session} ${params}\"" > "${DVTM_CMD_FIFO}"
     else
-        printf %s\\n 'echo -color Error No command socket available'
+        printf %s\\n 'echo Error No command socket available'
     fi
 } }
 
@@ -52,7 +52,7 @@ If no client is passed, then the current client is used} \
     elif [ -p "${DVTM_CMD_FIFO}" ]; then
         printf %s\\n "focus ${kak_client_env_DVTM_WINDOW_ID}" > "${DVTM_CMD_FIFO}"
     else
-        printf %s\\n "echo -color Error No command socket available"
+        printf %s\\n "echo Error No command socket available"
     fi
 } }
 
@@ -68,6 +68,6 @@ The tags arguments is a list of one or more tags to assign to the given client} 
             printf %s\\n "echo -color Error %{ ${output} }"
         fi
     else
-        printf %s\\n "echo -color Error No command socket available"
+        printf %s\\n "echo Error No command socket available"
     fi
 } }
